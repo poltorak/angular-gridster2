@@ -458,7 +458,8 @@ export class GridsterComponent
     this.gridColumns.length = GridsterComponent.getNewArrayLength(
       this.columns,
       this.curWidth,
-      this.curColWidth
+      this.curColWidth,
+      this.$options.maxCols
     );
     this.gridRows.length = GridsterComponent.getNewArrayLength(
       this.rows,
@@ -785,9 +786,18 @@ export class GridsterComponent
   private static getNewArrayLength(
     length: number,
     overallSize: number,
-    size: number
+    size: number,
+    maxCols?: number
   ): number {
-    const newLength = Math.max(length, Math.floor(overallSize / size));
+    let newLength: number;
+    if (maxCols) {
+      newLength = Math.min(
+        maxCols,
+        Math.max(length, Math.floor(overallSize / size))
+      );
+    } else {
+      newLength = Math.max(length, Math.floor(overallSize / size));
+    }
 
     if (newLength < 0) {
       return 0;
