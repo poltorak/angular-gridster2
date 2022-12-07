@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import {
   DisplayGrid,
   GridsterComponent,
+  GridsterComponentInterface,
   GridsterConfig,
   GridsterItem,
   GridsterItemComponent,
@@ -47,31 +48,41 @@ import { MarkdownModule } from 'ngx-markdown';
 export class GridMarginsComponent implements OnInit {
   options: GridsterConfig;
   dashboard: Array<GridsterItem>;
+  public gridsterApi!: GridsterConfig['api'];
 
   ngOnInit(): void {
     this.options = {
-      gridType: GridType.Fit,
+      gridType: GridType.VerticalFixed,
       displayGrid: DisplayGrid.Always,
-      margin: 10,
-      outerMargin: true,
-      outerMarginTop: null,
-      outerMarginRight: null,
-      outerMarginBottom: null,
-      outerMarginLeft: null
+      disableScrollHorizontal: true,
+      margin: 16,
+      minCols: 4,
+      minRows: 2,
+      maxCols: 4,
+      maxRows: 40,
+      fixedRowHeight: 210,
+      outerMarginBottom: 0,
+      outerMarginTop: 0,
+      outerMarginLeft: 0,
+      outerMarginRight: 0,
+      draggable: {
+        enabled: true
+      },
+      resizable: {
+        enabled: true
+      },
+      swap: true,
+      scrollToNewItems: true,
+      initCallback: (gridster: GridsterComponentInterface) => {
+        this.gridsterApi = gridster.options.api;
+        this.setMargin();
+      }
     };
 
     this.dashboard = [
-      { cols: 2, rows: 1, y: 0, x: 0 },
+      { cols: 1, rows: 1, y: 0, x: 0 },
       { cols: 2, rows: 2, y: 0, x: 2 },
-      { cols: 1, rows: 1, y: 0, x: 4 },
-      { cols: 3, rows: 2, y: 1, x: 4 },
-      { cols: 1, rows: 1, y: 4, x: 5 },
-      { cols: 1, rows: 1, y: 2, x: 1 },
-      { cols: 2, rows: 2, y: 5, x: 5 },
-      { cols: 2, rows: 2, y: 3, x: 2 },
-      { cols: 2, rows: 1, y: 2, x: 2 },
-      { cols: 1, rows: 1, y: 3, x: 4 },
-      { cols: 1, rows: 1, y: 0, x: 6 }
+      { cols: 1, rows: 1, y: 0, x: 3 }
     ];
   }
 
@@ -89,5 +100,17 @@ export class GridMarginsComponent implements OnInit {
 
   addItem(): void {
     this.dashboard.push({ x: 0, y: 0, cols: 1, rows: 1 });
+  }
+
+  private setMargin(): void {
+    const width = window.innerWidth;
+    if (width < 1920) {
+      this.options.margin = 8;
+    } else {
+      this.options.margin = 16;
+    }
+    if (this.options.api && this.options.api.optionsChanged) {
+      this.options.api.optionsChanged();
+    }
   }
 }

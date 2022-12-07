@@ -1,6 +1,6 @@
 {
-  "name": "angular-gridster2",
-  "version": "15.0.4",
+"name": "@poltorak/angular-gridster2",
+  "version": "15.0.5",
   "license": "MIT",
   "scripts": {
     "husky": "husky",
