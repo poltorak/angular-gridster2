@@ -214,7 +214,7 @@ export class GridsterRenderer {
     const newPos: GridRowCachedStyle = {
       top: this.gridster.curRowHeight * i,
       width:
-        this.gridster.gridColumns.length * this.gridster.curColWidth +
+        this.gridster.gridColumns.length * this.gridster.curColWidth -
         this.gridster.$options.margin,
       height: this.gridster.curRowHeight - this.gridster.$options.margin,
       style: {}
